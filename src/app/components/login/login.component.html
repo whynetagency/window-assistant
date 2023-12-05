@@ -1,0 +1,23 @@
+<div class="login row align-items-center" *ngIf="loginForm">
+  <div class="container">
+    <div class="login__form row align-items-center">
+      <div class="col-12">
+        <form [formGroup]="loginForm">
+          <div class="input-wrapper input-wrapper_email">
+            <input type="email" formControlName="email" placeholder="Email" required>
+          </div>
+          <div class="input-wrapper input-wrapper_pass">
+            <input type="password" formControlName="password" placeholder="Password" required>
+          </div>
+          <label class="error">{{errorMessage}}</label>
+          <input type="submit" class="btn submit" value="Get Started"  (click)="tryLogin(loginForm)">
+        </form>
+      </div>
+    </div>
+    <div class="login__footer row align-items-center">
+      <div class="col-12 text-center">
+        <p>© 2022. Created by <a href="https://upwork.com/ag/whynet/">WhyNet Agency</a></p>
+      </div>
+    </div>
+  </div>
+</div>

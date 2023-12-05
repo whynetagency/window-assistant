@@ -1,0 +1,163 @@
+<div class="container-fluid">
+  <header class="header row">
+    <div class="col">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img src="assets/logo-website-z.png" alt="Logo">
+          </a>
+          <button class="navbar-toggler" type="button" (click)="onLogOut()">Logout</button>
+          <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" href="#" (click)="onLogOut()">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="loading" *ngIf="isLoading">
+    <img class="loading__img" src="assets/images/loading.svg" alt="">
+      <p class="loading__title">Please wait a minute</p>
+    <p class="loading__sub-title">We are preparing your data...</p>
+  </div>
+  <div class="no-results" *ngIf="!isLoading && isNoResults && !(searchTerm.length > 0)">
+    <img class="selection__img" src="assets/images/empty.svg" alt="">
+    <p class="selection__title">No results found</p>
+    <p class="selection__sub-title">No data available to display</p>
+  </div>
+  <div class="row wrapper" *ngIf="!isLoading && !(isNoResults && !(searchTerm.length > 0))">
+    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 sidebar">
+      <div class="search">
+        <i class="bi bi-search"></i>
+        <input class="form-control"
+               placeholder="Search..."
+               [ngModel]="searchTerm" (ngModelChange)="onSearch($event)">
+        <i class="bi bi-person-plus-fill ctrl" (click)="onAddCustomer(template)"></i>
+        <i class="bi bi-arrow-clockwise ctrl" (click)="onReload()"></i>
+      </div>
+      <div class="projects-wrapper">
+        <div *ngIf="isNoResults && searchTerm.length > 0" class="no-results-sidebar">
+          <img src="assets/images/empty.svg" alt="">
+          <p>No results found for: <strong>{{searchTerm}}</strong></p>
+        </div>
+        <ul class="project-list">
+          <ng-container *ngFor="let item of projects">
+            <li (click)="onSelectProject(item)"
+                *ngIf="!item.isHidden">
+              <div class="project" [class]="{'active': item.id === project?.id}">
+                <div class="project__photo"
+                     [style.background-image]="'url(' + item.photos![0] + ')'"></div>
+                <div class="project__name" [title]="item.name">{{item.name}}</div>
+                <!--<div class="project__email" [title]="item.email">{{item.email ? item.email : 'N/A'}}</div>-->
+                <div class="project__phone">
+                  <i class="bi bi-telephone"></i>
+                  {{item.phone ? item.phone : 'N/A'}}
+                </div>
+                <div class="project__date">{{onGetDate(item.postedAt) | date}}</div>
+                <img src="assets/icons/chevron-compact-right.svg" class="project__arrow" alt="">
+              </div>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 content">
+      <div class="no-results hidden-sm" *ngIf="!project">
+        <img class="selection__img" src="assets/images/selection.svg" alt="">
+        <p class="selection__title">Select a project from the left sidebar</p>
+        <p class="selection__sub-title">To start working with...</p>
+      </div>
+      <div *ngIf="project" class="content__inner">
+        <div class="page-title">
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-8 col-lg-8 sm-5">
+              <span class="client-name">
+                <i class="bi bi-person-rolodex"></i>{{project.name}}
+              </span>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4 sm-5 text-right">
+              <input *ngIf="project.id"
+                     type="file"
+                     class="file-input"
+                     id="file"
+                     multiple
+                     accept="image/*"
+                     (change)="handleFileInput($event, project.id)">
+              <label for="file" class="reversed">
+                <i class="bi bi-folder-plus"></i>
+                <span class="hidden-sm">Add Photos</span>
+              </label>
+              <ng-container *ngIf="project.phone"><a [href]="'tel:' + project.phone"><i class="bi bi-telephone"></i></a></ng-container>
+              <ng-container *ngIf="project.email"><a [href]="'mailto:' + project.email"><i class="bi bi-envelope"></i></a></ng-container>
+            </div>
+          </div>
+        </div>
+
+        <div class="photos hidden-sm">
+          <ng-container *ngFor="let item of project.photos">
+            <div class="photos__item"
+                 [style.background-image]="'url(' + item + ')'"
+                 (click)="onMeasureImage(item)">
+              <img class="img" src="../../../assets/icons/placeholder.svg" alt="">
+              <div class="hover">
+                <img class="icon" src="../../../assets/icons/rulers.svg" alt="">
+                <p>Go to measurement</p>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer row">
+    <div class="col-xs-12 col-md-6 copyright">
+      © Copyright 2022 <strong>Into Blinds</strong> ABN: 64 151 850 143. All rights reserved.<br>
+    </div>
+    <div class="col-xs-12 col-md-6 author text-right">
+      Powered by <a href="httsp://whynet.com.ua" rel="external" target="_blank">WhyNet Agency</a></div>
+  </footer>
+
+</div>
+
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add New Customer</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="form">
+    <form [formGroup]="form" class="form">
+      <label class="form__label">Customer Name</label>
+      <input class="form__input" type="text" formControlName="name" placeholder="Your Name..."/>
+
+      <label class="form__label">Customer Phone<span>*</span></label>
+      <ngx-intl-tel-input
+        [cssClass]="'form__input form__input-tel'"
+        [selectedCountryISO]="CountryISO.Australia"
+        [phoneValidation]="true"
+        formControlName="phone">
+      </ngx-intl-tel-input>
+
+      <label class="form__label">Customer Email</label>
+      <input class="form__input" type="email" formControlName="email" placeholder="Your Email..."/>
+      <input type="file"
+             class="file-input"
+             id="file2"
+             multiple
+             accept="image/*"
+             (change)="handleFileInput2($event)">
+      <label for="file2"
+             class="btn step__btn"
+             [ngClass]="{'disabled': !this.form.valid}"
+             style="margin-top: 10px;">Choose Photos
+      </label>
+    </form>
+  </div>
+</ng-template>

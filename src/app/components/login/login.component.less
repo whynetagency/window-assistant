@@ -1,0 +1,54 @@
+.login{
+  height: 100vh;
+  background: url('../../../assets/images/window.jpg') no-repeat center;
+  background-size: cover;
+  position: relative;
+  &:before{
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(45, 66, 111, .6);
+    z-index: 1;
+  }
+  .container{
+    position: relative;
+    z-index: 2;
+  }
+  &__form{
+    form{
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+      text-align: center;
+      input{
+        width: 100%;
+        font-size: 21px;
+        padding: 8px 12px;
+        border-radius: 5px;
+        margin: 0 0 15px;
+        border: solid 1px var(--primary-background);
+        }
+      }
+      .error {
+        margin: 0;
+        color: #d2b906;
+        font-size: 14px;
+      }
+    }
+  &__footer{
+    padding: 15px 0;
+    height: 54px;
+    p{
+      margin: 0;
+      color: var(--secondary-color);
+      font-size: 14px;
+      a{
+        color: var(--secondary-color);
+      }
+    }
+  }
+}

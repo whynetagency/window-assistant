@@ -1,0 +1,123 @@
+<div class="loader" *ngIf="isLoading">
+  <img src="assets/images/preloader.png" alt="loading...">
+</div>
+
+<div class="step step_1" *ngIf="activeStep === steps.First" [style.height]="screenHeight + 'px'">
+  <p class="step__title">Bank Card and your phone is all you need for measurements.</p>
+  <img class="step__img" src="assets/images/card.svg" alt="Card">
+  <p class="step__text">Please prepare the card <br>and click the "Next" button</p>
+  <button class="btn step__btn" (click)="onChangeStep(steps.Second)">Next</button>
+</div>
+
+<div class="step step_2" *ngIf="activeStep === steps.Second" [style.height]="screenHeight + 'px'">
+  <p class="step__title">
+    Follow this simple steps
+    <span>the whole process will take no more than 2 minutes</span>
+  </p>
+  <ol class="step__list">
+    <li>Place a card in the lower right corner of your window</li>
+    <li>Point your camera at the window</li>
+    <li>Zooms in or out of so that the card is clearly in the specified area</li>
+    <li>Take a photo, send us and wait for a response</li>
+    <li>That's it</li>
+  </ol>
+  <button class="btn step__btn" (click)="onChangeStep(steps.Third)">Go To Measurements</button>
+  <!--<button class="btn step__btn" (click)="onChangeStep(steps.Select)">Select Photo</button>-->
+</div>
+
+<div class="step step_3" *ngIf="activeStep === steps.Select" [style.height]="screenHeight + 'px'">
+  <p class="step__title">
+    Select photos from your gallery
+    <span>Or take a new one</span>
+  </p>
+  <input type="file"
+         class="file-input"
+         id="file"
+         multiple
+         accept="image/*"
+         (change)="handleFileInput($event)">
+  <img class="step__img" src="../../../assets/images/files.svg" alt="">
+  <label for="file" class="btn step__btn">Choose Photos</label>
+</div>
+
+<div class="step step_3" *ngIf="activeStep === steps.Third" [style.height]="screenHeight + 'px'">
+  <!--<p class="step__title">
+    A coin on the window and you are ready to take a picture?
+    <span>Awesome, click the "Take a photo" button</span>
+  </p>-->
+
+  <ng-container *ngIf="!webcamImage">
+    <webcam *ngIf="!webcamImage"
+          [allowCameraSwitch]="false"
+          [height]="screenHeight - 180"
+          [width]="screenWidth - 60"
+          [imageQuality]="1"
+          [trigger]="triggerObservable"
+          (imageCapture)="handleImage($event)"
+          (initError)="handleInitError($event)">
+    </webcam>
+  </ng-container>
+
+  <ng-container *ngIf="webcamImage">
+    <img [src]="webcamImage.imageAsDataUrl"
+         [style.max-height]="(screenHeight - 180) + 'px'"
+         class="user-picture"
+         alt="your photo should be here">
+  </ng-container>
+
+  <div class="btn-group" *ngIf="webcamImage">
+    <button class="btn btn_secondary step__btn" (click)="removePhoto();">Retry</button>
+    <button class="btn step__btn" (click)="onChangeStep(steps.Fourth);">Done</button>
+  </div>
+  <button class="btn step__btn" *ngIf="!webcamImage" (click)="triggerSnapshot();">Take a photo</button>
+</div>
+
+<div class="step step_4" *ngIf="activeStep === steps.Fourth && form" [style.height]="screenHeight + 'px'">
+  <p class="step__title">
+    Congratulations! <br>You almost finished...
+    <span>Just fill out the form and your manager will contact you soon</span>
+  </p>
+  <form [formGroup]="form" class="form">
+    <!--<label class="form__label">Coin Denomination<span>*</span></label>
+
+    <div class="btn-group w-100" dropdown>
+      <button dropdownToggle class="btn btn-primary dropdown-toggle drop">
+        {{denomination}} <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu">
+        <li role="menuitem"><a class="dropdown-item" (click)="onSelectDenomination('5 cents')">5 cents</a></li>
+        <li role="menuitem"><a class="dropdown-item" (click)="onSelectDenomination('10 cents')">10 cents</a></li>
+        <li role="menuitem"><a class="dropdown-item" (click)="onSelectDenomination('20 cents')">20 cents</a></li>
+        <li role="menuitem"><a class="dropdown-item" (click)="onSelectDenomination('50 cents')">50 cents</a></li>
+        <li role="menuitem"><a class="dropdown-item" (click)="onSelectDenomination('One dollar')">One dollar</a></li>
+        <li role="menuitem"><a class="dropdown-item" (click)="onSelectDenomination('Two dollars')">Two dollars</a></li>
+      </ul>
+    </div>-->
+
+    <label class="form__label">Your Name</label>
+    <input class="form__input" type="text" formControlName="name" placeholder="Your Name..."/>
+
+    <label class="form__label">Your Phone<span>*</span></label>
+    <ngx-intl-tel-input
+      [cssClass]="'form__input form__input-tel'"
+      [selectedCountryISO]="CountryISO.Australia"
+      [phoneValidation]="true"
+      formControlName="phone">
+    </ngx-intl-tel-input>
+
+
+    <label class="form__label">Your Email</label>
+    <input class="form__input" type="email" formControlName="email" placeholder="Your Email..."/>
+  </form>
+
+  <button class="btn step__btn" [disabled]="!this.form.valid" (click)="onSubmit()">Submit</button>
+</div>
+
+<div class="step step_5" *ngIf="activeStep === steps.Fifth" [style.height]="screenHeight + 'px'">
+  <p class="step__title">
+    Thank You
+    <span>We will contact you soon</span>
+  </p>
+  <img class="step__img" src="assets/images/thank-you.svg" alt="Thank You">
+  <button class="btn step__btn" (click)="onChangeStep(steps.First)">Done!</button>
+</div>

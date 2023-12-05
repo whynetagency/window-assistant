@@ -1,0 +1,72 @@
+<div class="container-fluid">
+  <header class="header row">
+    <div class="col">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img src="assets/logo-website-z.png" alt="Logo">
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" href="#" (click)="onLogOut()">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+  <div class="row wrapper">
+    <div class="col content">
+      <ng-container *ngIf="photo">
+        <div class="row content__header">
+          <div class="col">
+            <div class="content__controls">
+              <button class="control control__txt control__go-back" [routerLink]="'../admin'">
+                <img src="assets/icons/chevron-compact-right.svg" alt="">
+                Go Back to list
+              </button>
+
+              <ng-container *ngIf="!isCalibrated && !standardSelected">
+                <span>Prepare image - </span>
+                <button class="control" (click)="rotate('left')">
+                  <img src="assets/icons/arrow-counterclockwise.svg" alt="">
+                </button>
+                <button class="control" (click)="rotate('right')">
+                  <img src="assets/icons/arrow-clockwise.svg" alt="">
+                </button>
+                <button class="control" (click)="zoom('in')">
+                  <img src="assets/icons/zoom-in.svg" alt="">
+                </button>
+                <button class="control" (click)="zoom('out')">
+                  <img src="assets/icons/zoom-out.svg" alt="">
+                </button>
+                <button class="control control__txt" (click)="startMeasuring()">Size and placement look's good</button>
+              </ng-container>
+
+              <ng-container *ngIf="isCalibrated && !standardSelected">
+                <span>Select the card as precisely as possible and press "Сalibrate" - </span>
+                <button class="control control__txt" (click)="onSelectStandard()">Сalibrate</button>
+              </ng-container>
+
+              <ng-container *ngIf="standardSelected">{{onGetSize()}}</ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="image-wrapper"
+             id="projectImage">
+          <div class="image-container">
+            <img [src]="rotatedPhoto ? rotatedPhoto : photo"
+                 #projectImage
+                 class="project__img"
+                 alt="">
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

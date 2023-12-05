@@ -1,0 +1,109 @@
+.step{
+  text-align: center;
+  width: 100vw;
+  height: 100vh;
+  height: var(--app-height);
+  padding: 45px 30px;
+  color: var(--primary-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  &__img{
+    max-width: 90%;
+    margin: 0 auto;
+  }
+  &__title{
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1;
+    span{
+      display: block;
+      margin: 5px 0;
+      font-size: 18px;
+      font-weight: 400;
+    }
+  }
+  &__text{
+    line-height: 1;
+  }
+  &__list{
+    text-align: left;
+    font-size: 21px;
+    margin-left: 30px;
+    line-height: 1;
+  }
+  &__list li{
+    margin-bottom: 15px;
+  }
+}
+.camera{
+  &-wrapper{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: rotate(-90deg);
+  }
+}
+.loader{
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  background: var(--overlay-background);
+  img{
+    animation-name: spin;
+    animation-duration: 5000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    width: 100px;
+  }
+}
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
+}
+.drop{
+  &-wrapper{
+    width: 100%;
+    position: relative;
+  }
+  width: 100%;
+  font-size: 21px;
+  padding: 8px 50px 8px 12px;
+  border-radius: 5px;
+  margin: 0 0 15px;
+  border: solid 1px var(--primary-background);
+  background: transparent !important;
+  color: var(--primary-color) !important;
+  font-weight: 400;
+  text-transform: initial;
+  text-align: left;
+  position: relative;
+}
+.dropdown-toggle::after {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+.user-picture{
+  width: auto;
+  max-width: 100%;
+}
+.file-input{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+}

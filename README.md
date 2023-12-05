@@ -1,6 +1,11 @@
-# WindowApp
+# Welcome to Window Masters Angular Project!
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.10.
+🪟📏 Capture and Calculate: A user-friendly Angular application that empowers users to effortlessly measure window sizes. Simply snap a photo of your window with a credit card placed on it, and let our intelligent system handle the calculations. Say goodbye to manual measurements – embrace the convenience of Window Masters!
+
+🚀 Key Features:
+
+📸 Image Capture: Capture clear photos of your windows using your device's camera.
+💳 Credit Card Calibration
 
 ## Development server
 
